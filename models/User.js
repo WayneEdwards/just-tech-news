@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
@@ -38,11 +39,19 @@ User.init({
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-            // This means thewpassword must be at least four characters long
+            // This means the password must be at least four characters long
             len: [4]
         }
-    }
-}, {
+    },
+
+    hooks: {
+        //set up beforeCreate lefecycle "hook" functionality
+        async beforeCreate(newUserData) {
+            newUserData.password = await bcrypt.hash(newUserData.password, 10);
+            return newUserData;
+        },
+    },
+
     // pass in our imported sequelize connection (the direct connection to our database)
     sequelize,
     // don't automatically create createdAt/updatedAt timestamp fields
