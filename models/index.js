@@ -1,6 +1,7 @@
-const Vote = require('./Vote');
 const User = require('./User');
-const Post = require("./Post");
+const Post = require('./Post');
+const Vote = require('./Vote');
+
 
 
 // create associations
@@ -39,6 +40,12 @@ User.hasMany(Vote, {
 Post.hasMany(Vote, {
     foreignKey: 'post_id'
 });
+
+
+
+
+
+
 
 
 module.exports = { User, Post, Vote };
